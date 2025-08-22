@@ -89,6 +89,7 @@ M.setup_tex = function(is_math, not_math)
 end
 
 M.setup_markdown = function()
+  local filetype = vim.bo.filetype
   local ls = require("luasnip")
   local utils = require("luasnip-latex-snippets.util.utils")
   local pipe = utils.pipe
@@ -97,7 +98,7 @@ M.setup_markdown = function()
   local not_math = utils.with_opts(utils.not_math, true)
 
   local math_i = require("luasnip-latex-snippets/math_i").retrieve(is_math)
-  ls.add_snippets("markdown", math_i, { default_priority = 0 })
+  ls.add_snippets(filetype, math_i, { default_priority = 0 })
 
   local autosnippets = _autosnippets(is_math, not_math)
   local trigger_of_snip = function(s)

@@ -25,24 +25,15 @@ M.pipe = function(fns)
   end
 end
 
-M.no_backslash = function(line_to_cursor, matched_trigger)
+M.no_backslash = function(line_to_cursor)
   return not line_to_cursor:find("\\%a+$", -#line_to_cursor)
 end
 
-local ts_utils = require("luasnip-latex-snippets.util.ts_utils")
-M.is_math = function(treesitter)
-  if treesitter then
-    return ts_utils.in_mathzone()
-  end
-
+M.is_math = function()
   return vim.fn["vimtex#syntax#in_mathzone"]() == 1
 end
 
-M.not_math = function(treesitter)
-  if treesitter then
-    return ts_utils.in_text(true)
-  end
-
+M.not_math = function()
   return not M.is_math()
 end
 
