@@ -61,6 +61,9 @@ function M.retrieve(is_math)
     wordTrig = true,
     trigEngine = "pattern",
     condition = pipe({ is_math, no_backslash }),
+    show_condition = function()
+      return false
+    end,
   }
 
   s = ls.extend_decorator.apply(ls.snippet, M.decorator) --[[@as function]]

@@ -38,7 +38,11 @@ local frac_node = {
     if depth ~= 0 then
       return string.format("%s\\frac{}", stripped)
     else
-      return string.format("%s\\frac{%s}", stripped:sub(1, i - 1), stripped:sub(i + 1, #stripped - 1))
+      return string.format(
+        "%s\\frac{%s}",
+        stripped:sub(1, i - 1),
+        stripped:sub(i + 1, #stripped - 1)
+      )
     end
   end, {}),
   t("{"),
@@ -70,6 +74,7 @@ function M.retrieve(is_math)
     wordTrig = false,
     trigEngine = "pattern",
     condition = pipe({ is_math }),
+    show_condition = is_math,
   }) --[[@as function]]
 
   local snippets = {

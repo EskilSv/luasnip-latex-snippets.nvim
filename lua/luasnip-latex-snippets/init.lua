@@ -97,9 +97,13 @@ M.setup_markdown = function()
   local is_math = utils.with_opts(utils.is_math, true)
   local not_math = utils.with_opts(utils.not_math, true)
 
+  -- Regular snippets
   local math_i = require("luasnip-latex-snippets/math_i").retrieve(is_math)
-  ls.add_snippets(filetype, math_i, { default_priority = 0 })
+  local delimiters = require("luasnip-latex-snippets/wA").retrieve(not_math)
+  local manual_snippets = vim.list_extend(math_i, delimiters)
+  ls.add_snippets(filetype, manual_snippets, { default_priority = 0 })
 
+  -- Auto snippets
   local autosnippets = _autosnippets(is_math, not_math)
   local trigger_of_snip = function(s)
     return s.trigger
@@ -118,18 +122,18 @@ M.setup_markdown = function()
     return not vim.tbl_contains(to_filter, s.trigger)
   end, autosnippets)
 
-  local parse_snippet = ls.extend_decorator.apply(ls.parser.parse_snippet, {
-    condition = pipe({ not_math }),
-  }) --[[@as function]]
+  -- local parse_snippet = ls.extend_decorator.apply(ls.parser.parse_snippet, {
+  --   condition = pipe({ not_math }),
+  -- }) --[[@as function]]
 
   -- tex delimiters
-  local normal_wA_tex = {
-    parse_snippet({ trig = "mk", name = "Math" }, "$${1:${TM_SELECTED_TEXT}}$"),
-    parse_snippet({ trig = "dm", name = "Block Math" }, "$$\n\t${1:${TM_SELECTED_TEXT}}\n.$$"),
-  }
-  vim.list_extend(filtered, normal_wA_tex)
+  -- local normal_wA_tex = {
+  --   parse_snippet({ trig = "mk", name = "Math" }, "$${1:${TM_SELECTED_TEXT}}$"),
+  --   parse_snippet({ trig = "dm", name = "Block Math" }, "$$\n\t${1:${TM_SELECTED_TEXT}}\n.$$"),
+  -- }
+  -- vim.list_extend(filtered, normal_wA_tex)
 
-  ls.add_snippets("markdown", filtered, {
+  ls.add_snippets(filetype, filtered, {
     type = "autosnippets",
     default_priority = 0,
   })

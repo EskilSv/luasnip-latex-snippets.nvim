@@ -9,6 +9,7 @@ function M.retrieve(is_math)
   local parse_snippet = ls.extend_decorator.apply(ls.parser.parse_snippet, {
     wordTrig = false,
     condition = pipe({ is_math, no_backslash }),
+    show_condition = is_math,
   }) --[[@as function]]
 
   local with_priority = ls.extend_decorator.apply(parse_snippet, {
